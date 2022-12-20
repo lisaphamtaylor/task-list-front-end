@@ -74,18 +74,14 @@ const App = () => {
   };
 
   const completeTask = (id) => {
-
-    
-    return updateTaskApi(id, !task.isComplete)
-    .then(newTasks = taskData.map((task) => {
+    const newTasks = taskData.map((task) => {
       if (task.id === id) {
         return { ...task, isComplete: !task.isComplete };
       } else {
         return task;
       }
-      });
-      setTaskData(newTasks);
-    );
+    });
+    setTaskData(newTasks);
   };
 
   const deleteTask = (id) => {
