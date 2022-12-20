@@ -30,15 +30,23 @@ const App = () => {
     },
   ]);
 
-  const updateTaskData = updatedTask => {
-    const tasks = taskData.map(task => {
-      if (task.id === updatedTask.id) {
-        return updatedTask;
+  const completeTask = (id) => {
+    const newTasks = taskData.map((task) => {
+      if (task.id === id) {
+        return { ...task, isComplete: !task.isComplete };
       } else {
         return task;
       }
     });
-    setTaskData(tasks);
+    setTaskData(newTasks);
+  };
+
+  const deleteTask = (id) => {
+    setTaskData((taskData) =>
+      taskData.filter((task) => {
+        return task.id !== id;
+      })
+    );
   };
 
   return (
@@ -47,9 +55,11 @@ const App = () => {
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
-        <div>{<TaskList 
-        tasks={taskData}
-        onUpdateTask={updateTaskData} />}</div>
+        <TaskList
+          tasks={taskData}
+          onCompleteTask={completeTask}
+          onDeleteTask={deleteTask}
+        ></TaskList>
       </main>
     </div>
   );

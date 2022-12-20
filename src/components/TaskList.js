@@ -5,17 +5,21 @@ import './TaskList.css';
 
 const TaskList = (props) => {
   const getTaskListJSX = props.tasks.map((task) => {
-      return (
+    return (
+      <li key={task.id}>
         <Task
           key={task.id}
           id={task.id}
           title={task.title}
           isComplete={task.isComplete}
-          onUpdateTask={props.onUpdateTask}
+          onCompleteTask={props.onCompleteTask}
+          onDeleteTask={props.onDeleteTask}
         />
-      );
-    });
-  return <ul className="tasks__list no-bullet">{getTaskListJSX(Task)}</ul>;
+      </li>
+    );
+  });
+
+  return <ul className="tasks__list no-bullet">{getTaskListJSX}</ul>;
 };
 
 TaskList.propTypes = {
@@ -23,10 +27,11 @@ TaskList.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
-      isComplete: PropTypes.bool.isRequired,
+      isComplete: PropTypes.bool,
     })
-  ).isRequired,
-  onUpdateTask: PropTypes.func.isRequired
+  ),
+  onCompleteTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
 };
 
 export default TaskList;
