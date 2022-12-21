@@ -4,9 +4,9 @@ import Task from './Task';
 import './TaskList.css';
 
 const TaskList = (props) => {
-  const getTaskListJSX = props.tasks.map((task) => {
+  const getTaskListJSX = props.tasks.map((task,index) => {
     return (
-      <li key={task.id}>
+      <ul key={index}>
         <Task
           key={task.id}
           id={task.id}
@@ -15,7 +15,7 @@ const TaskList = (props) => {
           onCompleteTask={props.onCompleteTask}
           onDeleteTask={props.onDeleteTask}
         />
-      </li>
+      </ul>
     );
   });
 
@@ -25,7 +25,7 @@ const TaskList = (props) => {
 TaskList.propTypes = {
   tasks: PropTypes.arrayOf(
     PropTypes.shape({
-      id: PropTypes.number.isRequired,
+      id: PropTypes.number,
       title: PropTypes.string.isRequired,
       isComplete: PropTypes.bool,
     })

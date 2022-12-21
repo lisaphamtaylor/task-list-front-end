@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import TaskList from './components/TaskList.js';
 import './App.css';
 import axios from 'axios';
+import NewTaskForm from './components/NewTaskForm.js';
 
 const kBaseUrl = 'https://task-list-api-c17.herokuapp.com';
 
@@ -73,23 +74,58 @@ const App = () => {
       });
   };
 
-  const completeTask = (id) => {
-    const newTasks = taskData.map((task) => {
-      if (task.id === id) {
-        return { ...task, isComplete: !task.isComplete };
-      } else {
-        return task;
-      }
+  // const completeTask = (id) => {
+  //   const newTasks = taskData.map((task) => {
+  //     if (task.id === id) {
+  //       return { ...task, isComplete: !task.isComplete };
+  //     } else {
+  //       return task;
+  //     }
+  //   });
+  //   setTaskData(newTasks);
+  // };
+  const completeTask = id => {
+    const task = taskData.find(task => task.id === id);
+    if (!task) {return Promise.resolve(); }
+    return updateTaskApi(id, !task.isComplete)
+    .then(newTask => {
+      setTaskData(oldTasks => {
+        return oldTasks.map(task => {
+          if (task.id === newTask.id) {
+            return newTask;
+          }else {
+            return task;
+          }
+        });
+      });
+    })
+    .catch(error => {
+      console.log(error.message);
     });
-    setTaskData(newTasks);
   };
 
+  // const deleteTask = (id) => {
+  //   setTaskData((taskData) =>
+  //     taskData.filter((task) => {
+  //       return task.id !== id;
+  //     })
+  //   );
+  // };
+
   const deleteTask = (id) => {
-    setTaskData((taskData) =>
-      taskData.filter((task) => {
-        return task.id !== id;
-      })
-    );
+    return deleteTaskApi(id)
+    .then(()=>{
+      setTaskData(oldTasks => {
+        return oldTasks.filter(task => task.id !==id);
+      });
+    })
+    .catch(error => {
+      console.log(error.message);
+    });
+  };
+  const addTask = (newTask) => {
+    const taskDataCopy = [...taskData,newTask];
+    setTaskData(taskDataCopy);
   };
 
   return (
@@ -98,6 +134,7 @@ const App = () => {
         <h1>Ada&apos;s Task List</h1>
       </header>
       <main>
+        <NewTaskForm onAddTask={addTask}/>
         <TaskList
           tasks={taskData}
           onCompleteTask={completeTask}
