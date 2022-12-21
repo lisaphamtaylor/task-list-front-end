@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import axios from 'axios';
-
+import './NewTaskForm.css';
 
 const NewTaskForm =({onAddTask})=>{
     const [formData, setFormData]= useState({ title: '', description: ''});
@@ -32,16 +31,16 @@ const NewTaskForm =({onAddTask})=>{
     };
 
 return(
-    <form onSubmit={onSubmitHandler}>
+    <form onSubmit={onSubmitHandler} className="form__item" >
         <label htmlFor='title'>Title</label>
-        <input style={{width:'50vw', justifyContent:'center'}} 
+        <input 
             name='title'
             type='text'
             onChange={onChangeHandler}
             value={formData.title}
         />
         <label htmlFor='Description'>Description</label>
-        <input
+        <input 
             name='description'
             type='text'
             onChange={onChangeHandler}
